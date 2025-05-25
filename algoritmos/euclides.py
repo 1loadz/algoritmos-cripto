@@ -24,9 +24,17 @@ def euclides(a, b):
         
         df.loc[line] = [resto, quociente, x, y]
 
-    print(df)
-    print(f"\nMDC({a}, {b}) = {df.iloc[line-1, 0]}")
-    print(f"Alpha = {df.iloc[line-1, 2]} / Beta = {df.iloc[line-1, 3]}")
+    # print(df)
+    # print(f"\nMDC({a}, {b}) = {df.iloc[line-1, 0]}")
+    # print(f"Alpha = {df.iloc[line-1, 2]} / Beta = {df.iloc[line-1, 3]}")
+
+    infos = {
+        "df": df,
+        "mdc": df.iloc[line-1, 0],
+        "alpha": df.iloc[line-1, 2],
+        "beta": df.iloc[line-1, 3]
+    }
+    return infos
 
 
 if __name__ == '__main__':
