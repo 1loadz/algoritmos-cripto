@@ -4,6 +4,13 @@ import pandas as pd
 import inspect
 
 
+def validate_input(input):
+    try:
+        return int(input) != 0
+    except ValueError:
+        return False
+
+
 def main():
     st.write("""
             # Algoritmos da Matéria Criptografia e Números Inteiros
@@ -36,10 +43,10 @@ def main():
             if value == "":
                 inputs_preenchidos = False
             else:
-                if value.isdigit():
+                if validate_input(value):
                     args[param_name] = int(value)
                 else:
-                    st.error("Por favor, digite um número inteiro não negativo.")
+                    st.error("Por favor, digite um número inteiro diferente de zero.")
                     inputs_preenchidos = False
 
         # Botão para rodar a função
