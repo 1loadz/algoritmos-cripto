@@ -36,7 +36,11 @@ def main():
             if value == "":
                 inputs_preenchidos = False
             else:
-                args[param_name] = int(value)
+                if value.isdigit():
+                    args[param_name] = int(value)
+                else:
+                    st.error("Por favor, digite um número inteiro não negativo.")
+                    inputs_preenchidos = False
 
         # Botão para rodar a função
         if inputs_preenchidos and st.button("Executar"):
