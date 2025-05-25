@@ -1,4 +1,4 @@
-from algorithms import fermat, euclides, achar_um_fator
+from algorithms import fermat, euclides, achar_um_fator, diofantina
 import streamlit as st
 import pandas as pd
 import inspect
@@ -14,6 +14,7 @@ def main():
                     "Algoritmo de Fermat": fermat,
                     "Euclides Estendido": euclides,
                     "Achar um Fator": achar_um_fator,
+                    "Equação Diofantina": diofantina,
                 }
 
     selected_algorithm = st.selectbox("Escolha um Algoritmo:", list(algorithms_dict.keys()))

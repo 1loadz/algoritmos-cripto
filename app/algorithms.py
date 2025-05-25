@@ -34,9 +34,16 @@ def euclides(a, b):
         df.loc[line] = [resto, quociente, x, y]
 
     st.write(f"### MDC({a}, {b}) = {df.iloc[line-1, 0]}")
-    st.write(f"### Alpha = {df.iloc[line-1, 2]} | Beta = {df.iloc[line-1, 3]}")
+    st.write(f"### Alfa = {df.iloc[line-1, 2]} | Beta = {df.iloc[line-1, 3]}")
     st.write(df)
-    # return df
+    
+    infos = {
+        "df": df,
+        "mdc": df.iloc[line-1, 0],
+        "alpha": df.iloc[line-1, 2],
+        "beta": df.iloc[line-1, 3]
+    }
+    return infos
 
 
 @st.cache_data
@@ -91,3 +98,23 @@ def achar_um_fator(n):
     st.write(f"### Quantidade de Passos: {steps}")
     # st.write(df)
     print_df(df)
+
+
+@st.cache_data
+def diofantina(a, b, c):
+    infos = euclides(a, b)
+
+    # Não é divisivel
+    if(c % (infos["mdc"] != 0)):
+       st.write(f"Essa equação diofantina não tem solucão.")
+       return
+    
+    # É divisivel
+    div = c // (infos["mdc"])
+    x = infos["alpha"]*div
+    y = infos["beta"]*div
+
+    st.write(f"### X =  {infos["alpha"]} * {div} = {x}")
+    st.write(f"### Y =  {infos["beta"]} * {div} = {y}")
+
+    return {"x": x, "y": y}
