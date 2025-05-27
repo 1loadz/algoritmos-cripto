@@ -5,6 +5,17 @@ import math
 
 
 @st.cache_data
+def euclidean_division(a, b):
+    q = a // b
+    r = a % b
+    if r < 0:
+        # ajusta para garantir que o resto seja positivo
+        q += 1
+        r -= b
+    return q, r
+
+
+@st.cache_data
 def euclides(a, b):
     df = pd.DataFrame(columns=['resto', 'quociente', 'x', 'y'])
     if(b > a):
@@ -21,8 +32,9 @@ def euclides(a, b):
         current_a = df.iloc[line-2, 0]
         current_b = df.iloc[line-1, 0]
 
-        resto = current_a % current_b
-        quociente = current_a // current_b
+        # resto = current_a % abs(current_b)
+        # quociente = current_a // current_b
+        quociente, resto = euclidean_division(current_a, current_b)
 
         if resto == 0:
             df.loc[line] = [resto, quociente, '-', '-']
@@ -33,10 +45,13 @@ def euclides(a, b):
         
         df.loc[line] = [resto, quociente, x, y]
 
-    st.write(f"### MDC({a}, {b}) = {df.iloc[line-1, 0]}")
-    st.write(f"### Alfa = {df.iloc[line-1, 2]} | Beta = {df.iloc[line-1, 3]}")
-    st.write(df)
-    
+    with st.container():
+        st.write("\n")
+        st.write("## Resultados do Algoritmo Euclidiano Estendido:")
+        st.write(f"#### MDC({a}, {b}) = {df.iloc[line-1, 0]}")
+        st.write(f"#### α = {df.iloc[line-1, 2]}  |  β = {df.iloc[line-1, 3]}")
+        st.write(df)
+
     infos = {
         "df": df,
         "mdc": df.iloc[line-1, 0],
@@ -77,12 +92,12 @@ def fermat(n):
 @st.cache_data
 def achar_um_fator(n):
     df = pd.DataFrame(columns=['Número', 'Fator?'])
-
+    fator = 0
     steps = 1
     f = 2
     while(True):
         if (n/f).is_integer():
-            st.write(f"### {f} é um fator de {n}")
+            fator = f
             df.loc[steps-1] = [f, "Sim"]
             break
         else:
@@ -95,9 +110,13 @@ def achar_um_fator(n):
             break
 
         steps += 1
-    st.write(f"### Quantidade de Passos: {steps}")
-    # st.write(df)
-    print_df(df)
+    
+    with st.container():
+        st.write("\n")
+        st.write("## Resultado do Algoritmo Achar um Fator:")
+        st.write(f"#### {f} é um fator de {n}")
+        st.write(f"#### Quantidade de Passos: {steps}")
+        print_df(df)
 
 
 @st.cache_data
@@ -114,39 +133,39 @@ def diofantina(a, b, c):
     x = infos["alpha"]*div
     y = infos["beta"]*div
 
-    st.write(f"### X =  {infos["alpha"]} * {div} = {x}")
-    st.write(f"### Y =  {infos["beta"]} * {div} = {y}")
+    with st.container():
+        st.write("\n")
+        st.write("## Resultado da Equação Diofantina:")
+        # st.markdown(f"""
+        #     <p style='font-size:34px;'>
+        #         <strong><span style='color:#FF4B4B'>Resultado da Equação Diofantina:</span></strong>
+        #     </p>
+        #     """, unsafe_allow_html=True
+        #     )
+
+    col1, col2, _ = st.columns(3)
+    with col1:
+        st.latex(rf"""
+                \begin{{align*}}
+                X &= \alpha \cdot \left( \frac{{C}}{{\text{{mdc}}}} \right) \\
+                X &= {infos['alpha']} \cdot \left( \frac{{{c}}}{{{infos['mdc']}}} \right) \\
+                X &= {infos['alpha']} \cdot {div} = {x}
+                \end{{align*}}
+        """)
+
+    with col2:
+        st.latex(rf"""
+                \begin{{align*}}
+                Y &= \beta \cdot \left( \frac{{C}}{{\text{{mdc}}}} \right) \\
+                Y &= {infos['beta']} \cdot \left( \frac{{{c}}}{{{infos['mdc']}}} \right) \\
+                Y &= {infos['beta']} \cdot {div} = {y}
+                \end{{align*}}
+        """)
 
     return {"x": x, "y": y}
 
 
-def find_cicle(a, n):
-    if n <= 0:
-        st.error("O módulo n deve ser um inteiro positivo.")
-        return None
-
-    remainders = [(0, 0)] * (n-1)
-
-    st.write("### Achando um Ciclo: ")
-    string_latex = r"\begin{{alignat*}}{{2}}"
-
-    i = 1
-    while(1):
-        remainder = pow(a, i, n)
-
-        # Ciclo encontrado
-        if remainders[remainder-1][1] != 0:
-            return i-1
-        
-        string_latex += fr"{a}^{{{i}}} &\equiv {{{remainder}}} \pmod{{{n}}} \\"        
-        remainders[remainder-1] = (i, remainder)
-        i+=1
-    
-    # print(remainders)
-    string_latex += r"\end{{alignat*}}"
-    st.latex(string_latex)
-
-
+@st.cache_data
 def find_cicle(a, n):
     remainders = [(0, 0)] * (n-1)
 
@@ -161,14 +180,16 @@ def find_cicle(a, n):
         if remainders[remainder-1][1] != 0:
             return i-1
         
-        string_latex = fr"{a}^{{{i}}} &\equiv {{{remainder}}} \pmod{{{n}}} \\"
-        st.latex(string_latex)      
+        string_latex = fr"{a}^{{{i}}} &\equiv {remainder} \pmod{{{n}}} \\"
+        st.latex(f"\\begin{{align*}} {string_latex} \\end{{align*}}")
+        
+        # col1, col2, col3 = st.columns(3)  # Coluna 1 estreita, segunda invisível
+        # with col1:
+        #     string_latex = fr"{a}^{{{i}}} &\equiv {remainder} \pmod{{{n}}} \\"
+        #     st.latex(f"\\begin{{align*}} {string_latex} \\end{{align*}}")
+
         remainders[remainder-1] = (i, remainder)
         i+=1
-    
-    # print(remainders)
-    # string_latex += r"\end{{alignat*}}"
-    # st.latex(string_latex)
 
 
 @st.cache_data
@@ -191,10 +212,10 @@ def solve_modular_exp(a, b, n):
     # Y_2 (a parte esquerda do segundo grupo) está implícita e vazia.
     string_latex = fr"""
     \begin{{alignat*}}{{2}}
-    {a}^{{{b}}} \pmod{{{n}}} &\equiv ({a}^{{{exp}}})^{{{parte_inteira}}} \cdot {a}^{{{resto}}} && \pmod{{{n}}} \\
-    {a}^{{{b}}} \pmod{{{n}}} &\equiv (1)^{{{parte_inteira}}} \cdot {a}^{{{resto}}} && \pmod{{{n}}} \\
-    {a}^{{{b}}} \pmod{{{n}}} &\equiv {a}^{{{resto}}} && \pmod{{{n}}} \\
-    {a}^{{{b}}} \pmod{{{n}}} &\equiv {teste} && \pmod{{{n}}}
+    {a}^{{{b}}} &\equiv ({a}^{{{exp}}})^{{{parte_inteira}}} \cdot {a}^{{{resto}}} && \pmod{{{n}}} \\
+    {a}^{{{b}}} &\equiv (1)^{{{parte_inteira}}} \cdot {a}^{{{resto}}} && \pmod{{{n}}} \\
+    {a}^{{{b}}} &\equiv {a}^{{{resto}}} && \pmod{{{n}}} \\
+    {a}^{{{b}}} &\equiv {teste} && \pmod{{{n}}}
     \end{{alignat*}}
     """
 

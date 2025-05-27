@@ -1,3 +1,4 @@
+# from classes.euclides import AlgoritmoEuclidianoEstendido
 from algorithms import fermat, euclides, achar_um_fator, diofantina, solve_modular_exp
 import streamlit as st
 import pandas as pd
@@ -18,11 +19,11 @@ def main():
 
     # Escolha de qual funcao usar:
     algorithms_dict = {
-                    "Algoritmo de Fermat": fermat,
                     "Euclides Estendido": euclides,
-                    "Achar um Fator": achar_um_fator,
                     "Equação Diofantina": diofantina,
+                    "Algoritmo de Fermat": fermat,
                     "Exponenciação Modular": solve_modular_exp,
+                    "Achar um Fator": achar_um_fator,
                 }
 
     selected_algorithm = st.selectbox("Escolha um Algoritmo:", list(algorithms_dict.keys()))
@@ -33,6 +34,11 @@ def main():
             Você selecionou: <strong><span style='color:#FF4B4B'>{selected_algorithm}</span></strong>
         </p>
     """, unsafe_allow_html=True)
+        
+        # Explicar cada uma das variáveis
+        # with st.container():
+        #     st.write("##### O que significa cada variavel:")
+        #     st.write("xxxxxxxxxxxxxx")
         
         selected_function = algorithms_dict[selected_algorithm]
         params = inspect.signature(selected_function).parameters
