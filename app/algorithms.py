@@ -105,8 +105,8 @@ def diofantina(a, b, c):
     infos = euclides(a, b)
 
     # Não é divisivel
-    if(c % (infos["mdc"] != 0)):
-       st.write(f"Essa equação diofantina não tem solucão.")
+    if (c % (infos["mdc"])) != 0:
+       st.write(f"### Essa equação diofantina não tem solucão.")
        return
     
     # É divisivel
@@ -118,3 +118,85 @@ def diofantina(a, b, c):
     st.write(f"### Y =  {infos["beta"]} * {div} = {y}")
 
     return {"x": x, "y": y}
+
+
+def find_cicle(a, n):
+    if n <= 0:
+        st.error("O módulo n deve ser um inteiro positivo.")
+        return None
+
+    remainders = [(0, 0)] * (n-1)
+
+    st.write("### Achando um Ciclo: ")
+    string_latex = r"\begin{{alignat*}}{{2}}"
+
+    i = 1
+    while(1):
+        remainder = pow(a, i, n)
+
+        # Ciclo encontrado
+        if remainders[remainder-1][1] != 0:
+            return i-1
+        
+        string_latex += fr"{a}^{{{i}}} &\equiv {{{remainder}}} \pmod{{{n}}} \\"        
+        remainders[remainder-1] = (i, remainder)
+        i+=1
+    
+    # print(remainders)
+    string_latex += r"\end{{alignat*}}"
+    st.latex(string_latex)
+
+
+def find_cicle(a, n):
+    remainders = [(0, 0)] * (n-1)
+
+    st.write("### Achando um Ciclo: ")
+    # string_latex = r""
+
+    i = 1
+    while(1):
+        remainder = a**i % n
+
+        # Ciclo encontrado
+        if remainders[remainder-1][1] != 0:
+            return i-1
+        
+        string_latex = fr"{a}^{{{i}}} &\equiv {{{remainder}}} \pmod{{{n}}} \\"
+        st.latex(string_latex)      
+        remainders[remainder-1] = (i, remainder)
+        i+=1
+    
+    # print(remainders)
+    # string_latex += r"\end{{alignat*}}"
+    # st.latex(string_latex)
+
+
+@st.cache_data
+def solve_modular_exp(a, b, n):
+    exp = find_cicle(a, n)
+
+    # Prevenção contra exp = 0, embora find_cicle deva retornar >= 1 se n>=1
+    if exp == 0:
+        st.error("Erro: 'exp' calculado como zero, verifique a função find_cicle e os inputs.")
+        return
+
+    parte_inteira = b // exp
+    resto = b % exp
+    teste = pow(a, resto, n)
+
+    # Usando alignat*{2}
+    # X_1 & \equiv Y_1 && X_2
+    # Onde X_1 é o LHS, Y_1 é a parte central do RHS.
+    # X_2 é o \pmod{n} do RHS, que será alinhado à direita no segundo grupo de alinhamento.
+    # Y_2 (a parte esquerda do segundo grupo) está implícita e vazia.
+    string_latex = fr"""
+    \begin{{alignat*}}{{2}}
+    {a}^{{{b}}} \pmod{{{n}}} &\equiv ({a}^{{{exp}}})^{{{parte_inteira}}} \cdot {a}^{{{resto}}} && \pmod{{{n}}} \\
+    {a}^{{{b}}} \pmod{{{n}}} &\equiv (1)^{{{parte_inteira}}} \cdot {a}^{{{resto}}} && \pmod{{{n}}} \\
+    {a}^{{{b}}} \pmod{{{n}}} &\equiv {a}^{{{resto}}} && \pmod{{{n}}} \\
+    {a}^{{{b}}} \pmod{{{n}}} &\equiv {teste} && \pmod{{{n}}}
+    \end{{alignat*}}
+    """
+
+    st.write("### Substituindo na nossa expressão:")
+    st.latex(string_latex)

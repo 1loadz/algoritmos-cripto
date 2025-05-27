@@ -1,4 +1,4 @@
-from algorithms import fermat, euclides, achar_um_fator, diofantina
+from algorithms import fermat, euclides, achar_um_fator, diofantina, solve_modular_exp
 import streamlit as st
 import pandas as pd
 import inspect
@@ -22,6 +22,7 @@ def main():
                     "Euclides Estendido": euclides,
                     "Achar um Fator": achar_um_fator,
                     "Equação Diofantina": diofantina,
+                    "Exponenciação Modular": solve_modular_exp,
                 }
 
     selected_algorithm = st.selectbox("Escolha um Algoritmo:", list(algorithms_dict.keys()))
@@ -36,21 +37,22 @@ def main():
         selected_function = algorithms_dict[selected_algorithm]
         params = inspect.signature(selected_function).parameters
         args = {}
-        inputs_preenchidos = True
+        filled_inputs = True
 
         for param_name, obj_param in params.items():
             value = st.text_input(f"### Valor de {param_name.capitalize()}:", key=param_name)
             if value == "":
-                inputs_preenchidos = False
+                filled_inputs = False
             else:
                 if validate_input(value):
                     args[param_name] = int(value)
                 else:
                     st.error("Por favor, digite um número inteiro diferente de zero.")
-                    inputs_preenchidos = False
+                    filled_inputs = False
 
         # Botão para rodar a função
-        if inputs_preenchidos and st.button("Executar"):
+        execute = st.button("Executar", type="primary")
+        if filled_inputs and execute:
             with st.spinner("Executando..."):
                 # df = selected_function(**args)
                 # st.write(df)
