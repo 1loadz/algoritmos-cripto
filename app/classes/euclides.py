@@ -31,17 +31,14 @@ class AlgoritmoEuclidianoEstendido():
 
     @st.cache_data
     def euclides(self):
-        a = self.a
-        b = self.b
-
         df = pd.DataFrame(columns=['resto', 'quociente', 'x', 'y'])
-        if(b > a):
-            aux = a
-            a = b
-            b = aux
+        if(self.b > self.a):
+            aux = self.a
+            self.a = self.b
+            self.b = aux
 
-        df.loc[0] = [a, '-', 1, 0]
-        df.loc[1] = [b, '-', 0, 1]
+        df.loc[0] = [self.a, '-', 1, 0]
+        df.loc[1] = [self.b, '-', 0, 1]
 
         line = 1
         while(True):
@@ -65,7 +62,7 @@ class AlgoritmoEuclidianoEstendido():
         with st.container():
             st.write("\n")
             st.write("## Resultados do Algoritmo Euclidiano Estendido:")
-            st.write(f"#### MDC({a}, {b}) = {df.iloc[line-1, 0]}")
+            st.write(f"#### MDC({self.a}, {self.b}) = {df.iloc[line-1, 0]}")
             st.write(f"#### α = {df.iloc[line-1, 2]}  |  β = {df.iloc[line-1, 3]}")
             st.write(df)
 

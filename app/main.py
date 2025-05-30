@@ -1,7 +1,6 @@
 # from classes.euclides import AlgoritmoEuclidianoEstendido
 from algorithms import fermat, euclides, achar_um_fator, diofantina, solve_modular_exp
 import streamlit as st
-import pandas as pd
 import inspect
 
 

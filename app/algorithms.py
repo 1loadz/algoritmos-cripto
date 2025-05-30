@@ -149,7 +149,7 @@ def diofantina(a, b, c):
             """, unsafe_allow_html=True
         )
 
-        col1, col2, _ = st.columns([1, 1, 0.2])
+        col1, col2 = st.columns([1, 1])
         with col1:
             st.latex(rf"""
                     \begin{{align*}}
@@ -184,7 +184,7 @@ def diofantina(a, b, c):
             """, unsafe_allow_html=True
         )
 
-        col1, col2, _ = st.columns([1, 1, 0.2])
+        col1, col2 = st.columns([1, 1])
         with col1:
             st.latex(rf"""
                     \begin{{align*}}
