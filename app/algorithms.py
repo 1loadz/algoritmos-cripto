@@ -130,39 +130,80 @@ def diofantina(a, b, c):
     
     # É divisivel
     div = c // (infos["mdc"])
-    x = infos["alpha"]*div
-    y = infos["beta"]*div
+    x_particular = infos["alpha"]*div
+    y_particular = infos["beta"]*div
 
+    # Particular Solution Container
     with st.container():
         st.write("\n")
-        st.write("## Resultado da Equação Diofantina:")
-        # st.markdown(f"""
-        #     <p style='font-size:34px;'>
-        #         <strong><span style='color:#FF4B4B'>Resultado da Equação Diofantina:</span></strong>
-        #     </p>
-        #     """, unsafe_allow_html=True
-        #     )
+        # st.write("## Solução Particular da Equação Diofantina:")
+        st.markdown(f"""
+            <style>
+                .hover-red:hover {{
+                    color: #FF4B4B !important;
+                }}
+            </style>
+            <p class='hover-red' style='font-size:34px; color:white;'>
+                <strong>Solução Particular da Equação Diofantina:</strong>
+            </p>
+            """, unsafe_allow_html=True
+        )
 
-    col1, col2, _ = st.columns(3)
-    with col1:
-        st.latex(rf"""
-                \begin{{align*}}
-                X &= \alpha \cdot \left( \frac{{C}}{{\text{{mdc}}}} \right) \\
-                X &= {infos['alpha']} \cdot \left( \frac{{{c}}}{{{infos['mdc']}}} \right) \\
-                X &= {infos['alpha']} \cdot {div} = {x}
-                \end{{align*}}
-        """)
+        col1, col2, _ = st.columns([1, 1, 0.2])
+        with col1:
+            st.latex(rf"""
+                    \begin{{align*}}
+                    X_0 &= \alpha \cdot \left( \frac{{c}}{{\text{{mdc}}}} \right) \\[2em]
+                    X_0 &= {infos['alpha']} \cdot \left( \frac{{{c}}}{{{infos['mdc']}}} \right) \\[2em]
+                    X_0 &= {infos['alpha']} \cdot {div} = {x_particular}
+                    \end{{align*}}
+            """)
 
-    with col2:
-        st.latex(rf"""
-                \begin{{align*}}
-                Y &= \beta \cdot \left( \frac{{C}}{{\text{{mdc}}}} \right) \\
-                Y &= {infos['beta']} \cdot \left( \frac{{{c}}}{{{infos['mdc']}}} \right) \\
-                Y &= {infos['beta']} \cdot {div} = {y}
-                \end{{align*}}
-        """)
+        with col2:
+            st.latex(rf"""
+                    \begin{{align*}}
+                    Y_0 &= \beta \cdot \left( \frac{{c}}{{\text{{mdc}}}} \right) \\[2em]
+                    Y_0 &= {infos['beta']} \cdot \left( \frac{{{c}}}{{{infos['mdc']}}} \right) \\[2em]
+                    Y_0 &= {infos['beta']} \cdot {div} = {y_particular}
+                    \end{{align*}}
+            """)
 
-    return {"x": x, "y": y}
+    # General Solution Container
+    with st.container():
+        st.write("\n")
+        # st.write("## Solução Geral da Equação Diofantina:")
+        st.markdown(f"""
+            <style>
+                .hover-red:hover {{
+                    color: #FF4B4B !important;
+                }}
+            </style>
+            <p class='hover-red' style='font-size:34px; color:white;'>
+                <strong>Solução Geral da Equação Diofantina:</strong>
+            </p>
+            """, unsafe_allow_html=True
+        )
+
+        col1, col2, _ = st.columns([1, 1, 0.2])
+        with col1:
+            st.latex(rf"""
+                    \begin{{align*}}
+                    X &= X_0 + \frac{{b}}{{\text{{mdc}}}} \cdot t \\[2em]
+                    X &= {x_particular} + \frac{{{b}}}{{{infos['mdc']}}} \cdot t \\[2em]
+                    X &= {x_particular} + ({b//infos['mdc']}) \cdot t
+                    \end{{align*}}
+            """)
+
+        with col2:
+            st.latex(rf"""
+                    \begin{{align*}}
+                    Y &= Y_0 - \frac{{a}}{{\text{{mdc}}}} \cdot t \\[2em]
+                    Y &= {y_particular} - \frac{{{a}}}{{{infos['mdc']}}} \cdot t \\[2em]
+                    Y &= {y_particular} - ({a//infos['mdc']}) \cdot t
+                    \end{{align*}}
+            """)
+
+    return {"x": x_particular, "y": y_particular}
 
 
 @st.cache_data

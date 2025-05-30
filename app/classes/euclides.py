@@ -26,6 +26,9 @@ class AlgoritmoEuclidianoEstendido():
             r -= b
         return q, r
 
+    def validate_input():
+        ...
+
     @st.cache_data
     def euclides(self):
         a = self.a
