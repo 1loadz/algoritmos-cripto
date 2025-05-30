@@ -14,6 +14,13 @@ Explorar de forma prática os principais algoritmos vistos em aula, com foco no 
 * Exponenciação Modular
 * Algoritmo Achar um Fator
 
+## 🌐 Acesse o site
+
+Quer ver os algoritmos funcionando na prática?  
+Confira a versão interativa hospedada no Streamlit:
+
+🔗 [Clique aqui para acessar o site](https://algoritmos-cripto.streamlit.app)
+
 ## 🤝 Contribuições
 
 Achou algo que pode melhorar? Tem sugestões ou quer adicionar novos algoritmos? Sinta-se à vontade para falar comigo.
