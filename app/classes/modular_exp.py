@@ -26,7 +26,7 @@ class ModularExponentiation():
             if remainders[remainder-1][1] != 0:
                 return i-1
             
-            string_latex = fr"{a}^{{{i}}} &\equiv {remainder} \pmod{{{n}}} \\"
+            string_latex = fr"{self.a}^{{{i}}} &\equiv {remainder} \pmod{{{self.n}}} \\"
             st.latex(f"\\begin{{align*}} {string_latex} \\end{{align*}}")
 
             remainders[remainder-1] = (i, remainder)
