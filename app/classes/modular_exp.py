@@ -5,6 +5,7 @@ import pandas as pd
 class ModularExponentiation():
     
     input_format = fr"Calcula: a^b (mod n)"
+    params = ["a", "b", "n"]
 
     def __init__(self, a, b, n):
         self.a = a
@@ -12,7 +13,6 @@ class ModularExponentiation():
         self.n = n
     
 
-    @st.cache_data
     def find_cicle(self):
         remainders = [(0, 0)] * (self.n-1)
 
@@ -33,7 +33,6 @@ class ModularExponentiation():
             i+=1
 
 
-    @st.cache_data
     def solve_modular_exp(self):
         exp = self.find_cicle()
 
@@ -57,3 +56,7 @@ class ModularExponentiation():
 
         st.write("### Substituindo na nossa expressão:")
         st.latex(string_latex)
+
+
+    def solve(self):
+        self.solve_modular_exp()

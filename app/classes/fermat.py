@@ -6,13 +6,13 @@ import math
 class AlgoritmoDeFermat():
 
     input_format = "Aplica o Algoritmo de Fermat para N"
+    params = ["n"]
 
     def __init__(self, n):
         self.n = n
-        self.param = {"n": self.n}
+        # self.param = {"n": self.n}
 
 
-    @st.cache_data
     def fermat(self):
         n = self.n
         df = pd.DataFrame(columns=['n', 'x', 'y', 'z'])
@@ -39,3 +39,7 @@ class AlgoritmoDeFermat():
         else:
             st.write(f"## Fator 1: {x-y} | Fator 2: {x+y}")
         st.write(df)
+    
+
+    def solve(self):
+        self.fermat()

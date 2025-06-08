@@ -5,12 +5,13 @@ from algorithms import euclides
 class EquacaoDiofantina():
 
     input_format = fr"Calcula a seguinte Equação Diofantina: ax + by = c"
+    params = ["a", "b", "c"]
 
     def __init__(self, a, b, c):
         self.a = a
         self.b = b
         self.c = c
-        self.params = {"a": self.a, "b": self.b, "c": self.c}
+        # self.params = {"a": self.a, "b": self.b, "c": self.c}
 
         self.infos = euclides(a, b)
         self.mdc = self.infos["mdc"]
@@ -20,7 +21,7 @@ class EquacaoDiofantina():
         self.x0 = None
         self.y0 = None
     
-    @st.cache_data
+
     def solve_diofantina(self):
         # Não é divisivel
         if (self.c % self.mdc) != 0:
@@ -96,7 +97,7 @@ class EquacaoDiofantina():
                 st.latex(rf"""
                         \begin{{align*}}
                         X &= X_0 + \frac{{b}}{{\text{{mdc}}}} \cdot t \\[2em]
-                        X &= {self.x0} + \frac{{{b}}}{{{self.mdc}}} \cdot t \\[2em]
+                        X &= {self.x0} + \frac{{{self.b}}}{{{self.mdc}}} \cdot t \\[2em]
                         X &= {self.x0} + ({self.b//self.mdc}) \cdot t
                         \end{{align*}}
                 """)
@@ -105,7 +106,10 @@ class EquacaoDiofantina():
                 st.latex(rf"""
                         \begin{{align*}}
                         Y &= Y_0 - \frac{{a}}{{\text{{mdc}}}} \cdot t \\[2em]
-                        Y &= {self.y0} - \frac{{{a}}}{{{self.mdc}}} \cdot t \\[2em]
+                        Y &= {self.y0} - \frac{{{self.a}}}{{{self.mdc}}} \cdot t \\[2em]
                         Y &= {self.y0} - ({self.a//self.mdc}) \cdot t
                         \end{{align*}}
                 """)
+
+    def solve(self):
+        self.solve_diofantina()

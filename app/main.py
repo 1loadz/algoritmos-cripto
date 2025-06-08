@@ -1,7 +1,10 @@
-# from classes.euclides import AlgoritmoEuclidianoEstendido
-from algorithms import fermat, euclides, achar_um_fator, diofantina, solve_modular_exp
+from classes.euclides import AlgoritmoEuclidianoEstendido
+from classes.diofantina import EquacaoDiofantina
+from classes.fermat import AlgoritmoDeFermat
+from classes.modular_exp import ModularExponentiation
+from classes.achar_fator import AcharUmFator
+
 import streamlit as st
-import inspect
 
 
 def validate_input(input):
@@ -16,13 +19,13 @@ def main():
             # Algoritmos da Matéria Criptografia e Números Inteiros
             """)
 
-    # Escolha de qual funcao usar:
+    # Escolha do algoritmo:
     algorithms_dict = {
-                    "Euclides Estendido": euclides,
-                    "Equação Diofantina": diofantina,
-                    "Algoritmo de Fermat": fermat,
-                    "Exponenciação Modular": solve_modular_exp,
-                    "Achar um Fator": achar_um_fator,
+                    "Euclides Estendido": AlgoritmoEuclidianoEstendido,
+                    "Equação Diofantina": EquacaoDiofantina,
+                    "Algoritmo de Fermat": AlgoritmoDeFermat,
+                    "Exponenciação Modular": ModularExponentiation,
+                    "Achar um Fator": AcharUmFator,
                 }
 
     selected_algorithm = st.selectbox("Escolha um Algoritmo:", list(algorithms_dict.keys()))
@@ -38,33 +41,35 @@ def main():
         # with st.container():
         #     st.write("##### O que significa cada variavel:")
         #     st.write("xxxxxxxxxxxxxx")
-        
-        selected_function = algorithms_dict[selected_algorithm]
-        params = inspect.signature(selected_function).parameters
-        args = {}
-        filled_inputs = True
 
-        for param_name, obj_param in params.items():
-            value = st.text_input(f"### Valor de {param_name.capitalize()}:", key=param_name)
+
+        # Cria uma instância da classe correspondente ao algoritmo selecionado
+        algorithm_class = algorithms_dict[selected_algorithm]
+        params = algorithm_class.params
+        args = {}
+
+        filled_inputs = True
+        for i, param in enumerate(params):
+            value = st.text_input(f"### Valor de {param.capitalize()}:", key=param)
             if value == "":
                 filled_inputs = False
             else:
                 if validate_input(value):
-                    args[param_name] = int(value)
+                    args[param] = int(value)
                 else:
                     st.error("Por favor, digite um número inteiro diferente de zero.")
                     filled_inputs = False
+
 
         # Botão para rodar a função
         execute = st.button("Executar", type="primary")
         if filled_inputs and execute:
             with st.spinner("Executando..."):
-                # df = selected_function(**args)
-                # st.write(df)
-                selected_function(**args)
-
-    else:
-        st.write("Por favor, selecione uma opção para começar.")
+                # Instanciando a classe do algoritmo e chamando o método correspondente
+                algorithm_object = algorithm_class(**args)
+                algorithm_object.solve()
+        else:
+            st.write("Por favor, selecione uma opção para começar.")
 
 
 if __name__ == "__main__":
