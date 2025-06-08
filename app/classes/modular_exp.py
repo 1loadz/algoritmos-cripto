@@ -3,7 +3,10 @@ import streamlit as st
 
 class ModularExponentiation():
     
-    input_format = r"\text{Calcula: } a^b \bmod n"
+    @property
+    def input_format(self):
+        return r"\text{Calcula: } a^b \bmod n"
+    
     params = ["a", "b", "n"]
 
     @staticmethod

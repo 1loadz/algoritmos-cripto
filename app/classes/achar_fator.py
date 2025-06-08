@@ -4,7 +4,11 @@ from utils import print_df
 
 
 class AcharUmFator():
-    input_format = r"\text{Calcula um fator de N}"
+    
+    @property
+    def input_format(self):
+        return r"\text{Calcula um fator de N}"
+    
     params = ["n"]
 
     @staticmethod

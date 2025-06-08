@@ -4,7 +4,10 @@ import streamlit as st
 
 class EquacaoDiofantina():
 
-    input_format = r"\text{Calcula a seguinte Equação Diofantina: } Ax + By = C"
+    @property
+    def input_format(self):
+        return r"\text{Calcula a seguinte Equação Diofantina: } Ax + By = C"
+    
     params = ["a", "b", "c"]
 
     @staticmethod

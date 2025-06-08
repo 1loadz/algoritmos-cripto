@@ -5,7 +5,10 @@ import math
 
 class AlgoritmoDeFermat():
 
-    input_format = r"\text{Aplica o Algoritmo de Fermat para } N"
+    @property
+    def input_format(self):
+        return r"\text{Aplica o Algoritmo de Fermat para } N"
+    
     params = ["n"]
 
     @staticmethod

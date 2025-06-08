@@ -4,7 +4,10 @@ import pandas as pd
 
 class AlgoritmoEuclidianoEstendido():
 
-    input_format = r"\text{Calcula } \mathrm{MDC}(A, B)"
+    @property
+    def input_format(self):
+        return r"\text{Calcula } \mathrm{MDC}(A, B)"
+    
     params = ["a", "b"]
 
     @staticmethod
