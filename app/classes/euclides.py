@@ -4,44 +4,50 @@ import pandas as pd
 
 class AlgoritmoEuclidianoEstendido():
 
-    input_format = "Calcula o valor de MDC(A, B)"
+    input_format = r"\text{Calcula } \mathrm{MDC}(A, B)"
     params = ["a", "b"]
 
     def __init__(self, a, b):
         self.a = a
         self.b = b
-        self.results = {}
-        # self.params = {"a": self.a, "b": self.b}
-        
+        self.results = {}        
 
     
-    def euclidean_division(_self, _a, _b):
-        a = _a
-        b = _b
+    def validate_input():
+        try:
+            return int(input) != 0
+        except ValueError:
+            return False
 
-        q = a // b
-        r = a % b
+    def euclidean_division(self, a, b):
+        quociente = a // b
+        resto = a % b
         
         # Ajusta para garantir que o resto seja positivo
-        if r < 0:
-            q += 1
-            r -= b
+        if resto < 0:
+            quociente += 1
+            resto -= b
 
-        return q, r
+        return quociente, resto
 
-    def validate_input():
-        ...
+    def display_results(self, df, line):
+        with st.container():
+            st.write("\n")
+            st.write("## Resultados do Algoritmo Euclidiano Estendido:")
+            st.write(f"#### MDC({self.a}, {self.b}) = {df.iloc[line-1, 0]}")
+            st.write(f"#### α = {df.iloc[line-1, 2]}  |  β = {df.iloc[line-1, 3]}")
+            st.write(df)
 
-    
-    def euclides(_self):
+
+    def euclides_algorithm(self):
         df = pd.DataFrame(columns=['resto', 'quociente', 'x', 'y'])
-        if(_self.b > _self.a):
-            aux = _self.a
-            _self.a = _self.b
-            _self.b = aux
+        if(self.b > self.a):
+            aux = self.a
+            self.a = self.b
+            self.b = aux
 
-        df.loc[0] = [_self.a, '-', 1, 0]
-        df.loc[1] = [_self.b, '-', 0, 1]
+        df.loc[0] = [self.a, '-', 1, 0]
+        df.loc[1] = [self.b, '-', 0, 1]
 
         line = 1
         while(True):
@@ -49,7 +55,7 @@ class AlgoritmoEuclidianoEstendido():
             current_a = df.iloc[line-2, 0]
             current_b = df.iloc[line-1, 0]
 
-            quociente, resto = _self.euclidean_division(current_a, current_b)
+            quociente, resto = self.euclidean_division(current_a, current_b)
 
             if resto == 0:
                 df.loc[line] = [resto, quociente, '-', '-']
@@ -60,22 +66,15 @@ class AlgoritmoEuclidianoEstendido():
             
             df.loc[line] = [resto, quociente, x, y]
 
-        with st.container():
-            st.write("\n")
-            st.write("## Resultados do Algoritmo Euclidiano Estendido:")
-            st.write(f"#### MDC({_self.a}, {_self.b}) = {df.iloc[line-1, 0]}")
-            st.write(f"#### α = {df.iloc[line-1, 2]}  |  β = {df.iloc[line-1, 3]}")
-            st.write(df)
+        self.display_results(df, line)
 
-        _self.results = {
+        self.results = {
             "df": df,
             "mdc": df.iloc[line-1, 0],
             "alpha": df.iloc[line-1, 2],
             "beta": df.iloc[line-1, 3]
         }
 
-        return _self.results
-
-
     def solve(self):
-        return self.euclides()
+        self.euclides_algorithm()
+        return self.results

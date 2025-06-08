@@ -1,10 +1,9 @@
 import streamlit as st
-import pandas as pd
 
 
 class ModularExponentiation():
     
-    input_format = fr"Calcula: a^b (mod n)"
+    input_format = r"\text{Calcula: } a^b \bmod n"
     params = ["a", "b", "n"]
 
     def __init__(self, a, b, n):
@@ -33,7 +32,7 @@ class ModularExponentiation():
             i+=1
 
 
-    def solve_modular_exp(self):
+    def solve(self):
         exp = self.find_cicle()
 
         # Prevenção contra exp = 0, embora find_cicle deva retornar >= 1 se n>=1
@@ -41,22 +40,21 @@ class ModularExponentiation():
             st.error("Erro: 'exp' calculado como zero, verifique a função find_cicle e os inputs.")
             return
 
-        parte_inteira = self.b // exp
-        resto = self.b % exp
-        teste = pow(self.a, resto, self.n)
+        quotient = self.b // exp
+        remainder = self.b % exp
+        modular_result = pow(self.a, remainder, self.n)
 
+        self.display_results(quotient, remainder, exp, modular_result)
+
+    def display_results(self, quotient, remainder, exp, modular_result):
         string_latex = fr"""
         \begin{{alignat*}}{{2}}
-        {self.a}^{{{self.b}}} &\equiv ({self.a}^{{{exp}}})^{{{parte_inteira}}} \cdot {self.a}^{{{resto}}} && \pmod{{{self.n}}} \\
-        {self.a}^{{{self.b}}} &\equiv (1)^{{{parte_inteira}}} \cdot {self.a}^{{{resto}}} && \pmod{{{self.n}}} \\
-        {self.a}^{{{self.b}}} &\equiv {self.a}^{{{resto}}} && \pmod{{{self.n}}} \\
-        {self.a}^{{{self.b}}} &\equiv {teste} && \pmod{{{self.n}}}
+        {self.a}^{{{self.b}}} &\equiv ({self.a}^{{{exp}}})^{{{quotient}}} \cdot {self.a}^{{{remainder}}} && \pmod{{{self.n}}} \\
+        {self.a}^{{{self.b}}} &\equiv (1)^{{{quotient}}} \cdot {self.a}^{{{remainder}}} && \pmod{{{self.n}}} \\
+        {self.a}^{{{self.b}}} &\equiv {self.a}^{{{remainder}}} && \pmod{{{self.n}}} \\
+        {self.a}^{{{self.b}}} &\equiv {modular_result} && \pmod{{{self.n}}}
         \end{{alignat*}}
         """
 
         st.write("### Substituindo na nossa expressão:")
         st.latex(string_latex)
-
-
-    def solve(self):
-        self.solve_modular_exp()

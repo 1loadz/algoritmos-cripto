@@ -11,7 +11,7 @@ class AcharUmFator():
         self.n = n
     
 
-    def achar_um_fator(self):
+    def find_factor(self):
         df = pd.DataFrame(columns=['Número', 'Fator?'])
         fator = 0
         steps = 1
@@ -26,19 +26,21 @@ class AcharUmFator():
 
             f += 1
 
-            if f > self.n**(1/2):
+            if f**2 > self.n:
                 st.write(f"### {self.n} é primo")
                 break
 
             steps += 1
         
+        self.display_results(df, fator, steps)
+    
+    def display_results(self, df, f, steps):
         with st.container():
             st.write("\n")
             st.write("## Resultado do Algoritmo Achar um Fator:")
             st.write(f"#### {f} é um fator de {self.n}")
             st.write(f"#### Quantidade de Passos: {steps}")
             print_df(df)
-    
 
     def solve(self):
-        self.achar_um_fator()
+        self.find_factor()

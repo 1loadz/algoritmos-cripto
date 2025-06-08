@@ -1,44 +1,32 @@
+from classes.euclides import AlgoritmoEuclidianoEstendido
 import streamlit as st
-from algorithms import euclides
 
 
 class EquacaoDiofantina():
 
-    input_format = fr"Calcula a seguinte Equação Diofantina: ax + by = c"
+    input_format = r"\text{Calcula a seguinte Equação Diofantina: } aX + bY = c"
     params = ["a", "b", "c"]
 
     def __init__(self, a, b, c):
         self.a = a
         self.b = b
         self.c = c
-        # self.params = {"a": self.a, "b": self.b, "c": self.c}
-
-        self.infos = euclides(a, b)
-        self.mdc = self.infos["mdc"]
-        self.alpha = self.infos["alpha"]
-        self.beta = self.infos["beta"]
 
         self.x0 = None
         self.y0 = None
+
+        euclides = AlgoritmoEuclidianoEstendido(a, b)
+        self.infos = euclides.solve()
+
+        self.mdc = self.infos["mdc"]
+        self.alpha = self.infos["alpha"]
+        self.beta = self.infos["beta"]
     
-
-    def solve_diofantina(self):
-        # Não é divisivel
-        if (self.c % self.mdc) != 0:
-            st.write(f"### Essa equação diofantina não tem solucão.")
-            return
-        
-        # É divisivel
-        self.compute_particular_solution()
-        self.display_particular_solution()
-        self.display_general_solution()
-
 
     def compute_particular_solution(self):
         div = self.c // self.mdc
         self.x0 = self.alpha * div
         self.y0 = self.beta * div
-
 
     def display_particular_solution(self):
         with st.container():
@@ -76,7 +64,6 @@ class EquacaoDiofantina():
                         \end{{align*}}
                 """)
 
-
     def display_general_solution(self):
         with st.container():
             st.write("\n")
@@ -111,5 +98,14 @@ class EquacaoDiofantina():
                         \end{{align*}}
                 """)
 
+
     def solve(self):
-        self.solve_diofantina()
+        # Não é divisivel
+        if (self.c % self.mdc) != 0:
+            st.write(f"### Essa equação diofantina não tem solucão.")
+            return
+        
+        # É divisivel
+        self.compute_particular_solution()
+        self.display_particular_solution()
+        self.display_general_solution()
