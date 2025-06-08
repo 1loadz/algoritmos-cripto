@@ -1,11 +1,13 @@
 import streamlit as st
 
+from classes.base_algorithm import BaseAlgorithm, classproperty
 
-class ModularExponentiation():
+
+class ModularExponentiation(BaseAlgorithm):
     
-    @property
-    def input_format(self):
-        return r"\text{Calcula: } a^b \bmod n"
+    @classproperty
+    def input_format(cls):
+        return r"\text{Calcula: } A^B \bmod N"
     
     params = ["a", "b", "n"]
 

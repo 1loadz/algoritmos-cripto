@@ -1,12 +1,16 @@
-import streamlit as st
-import pandas as pd
 import math
 
+import pandas as pd
+import streamlit as st
 
-class AlgoritmoDeFermat():
+from classes.base_algorithm import BaseAlgorithm, classproperty
 
-    @property
-    def input_format(self):
+
+
+class AlgoritmoDeFermat(BaseAlgorithm):
+
+    @classproperty
+    def input_format(cls):
         return r"\text{Aplica o Algoritmo de Fermat para } N"
     
     params = ["n"]
@@ -57,5 +61,5 @@ class AlgoritmoDeFermat():
         }
     
     def solve(self):
-        self.fermatalgorithm()
+        self.fermat_algorithm()
         return self.results

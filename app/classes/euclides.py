@@ -1,11 +1,13 @@
-import streamlit as st
 import pandas as pd
+import streamlit as st
+
+from classes.base_algorithm import BaseAlgorithm, classproperty
 
 
-class AlgoritmoEuclidianoEstendido():
+class AlgoritmoEuclidianoEstendido(BaseAlgorithm):
 
-    @property
-    def input_format(self):
+    @classproperty
+    def input_format(cls):
         return r"\text{Calcula } \mathrm{MDC}(A, B)"
     
     params = ["a", "b"]

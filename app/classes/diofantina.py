@@ -1,11 +1,14 @@
-from classes.euclides import AlgoritmoEuclidianoEstendido
 import streamlit as st
 
+from classes.base_algorithm import BaseAlgorithm, classproperty
+from classes.euclides import AlgoritmoEuclidianoEstendido
 
-class EquacaoDiofantina():
 
-    @property
-    def input_format(self):
+
+class EquacaoDiofantina(BaseAlgorithm):
+
+    @classproperty
+    def input_format(cls):
         return r"\text{Calcula a seguinte Equação Diofantina: } Ax + By = C"
     
     params = ["a", "b", "c"]
