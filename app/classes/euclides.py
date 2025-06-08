@@ -7,17 +7,17 @@ class AlgoritmoEuclidianoEstendido():
     input_format = r"\text{Calcula } \mathrm{MDC}(A, B)"
     params = ["a", "b"]
 
-    def __init__(self, a, b):
-        self.a = a
-        self.b = b
-        self.results = {}        
-
-    
-    def validate_input():
+    @staticmethod
+    def validate_input(input):
         try:
             return int(input) != 0
         except ValueError:
             return False
+
+    def __init__(self, a, b):
+        self.a = a
+        self.b = b
+        self.results = {}        
 
     def euclidean_division(self, a, b):
         quociente = a // b
@@ -37,7 +37,6 @@ class AlgoritmoEuclidianoEstendido():
             st.write(f"#### MDC({self.a}, {self.b}) = {df.iloc[line-1, 0]}")
             st.write(f"#### α = {df.iloc[line-1, 2]}  |  β = {df.iloc[line-1, 3]}")
             st.write(df)
-
 
     def euclides_algorithm(self):
         df = pd.DataFrame(columns=['resto', 'quociente', 'x', 'y'])

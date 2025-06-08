@@ -4,8 +4,15 @@ from utils import print_df
 
 
 class AcharUmFator():
-    input_format = r"Calcula um fator de n"
+    input_format = r"\text{Calcula um fator de N}"
     params = ["n"]
+
+    @staticmethod
+    def validate_input(input):
+        try:
+            return int(input) != 0
+        except ValueError:
+            return False
 
     def __init__(self, n):
         self.n = n

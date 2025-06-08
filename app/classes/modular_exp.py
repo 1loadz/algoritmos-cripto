@@ -6,12 +6,18 @@ class ModularExponentiation():
     input_format = r"\text{Calcula: } a^b \bmod n"
     params = ["a", "b", "n"]
 
+    @staticmethod
+    def validate_input(input):
+        try:
+            return int(input) != 0
+        except ValueError:
+            return False
+
     def __init__(self, a, b, n):
         self.a = a
         self.b = b
         self.n = n
     
-
     def find_cicle(self):
         remainders = [(0, 0)] * (self.n-1)
 
@@ -30,7 +36,6 @@ class ModularExponentiation():
 
             remainders[remainder-1] = (i, remainder)
             i+=1
-
 
     def solve(self):
         exp = self.find_cicle()

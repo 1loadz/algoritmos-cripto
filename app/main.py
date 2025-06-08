@@ -3,15 +3,7 @@ from classes.diofantina import EquacaoDiofantina
 from classes.fermat import AlgoritmoDeFermat
 from classes.modular_exp import ModularExponentiation
 from classes.achar_fator import AcharUmFator
-
 import streamlit as st
-
-
-def validate_input(input):
-    try:
-        return int(input) != 0
-    except ValueError:
-        return False
 
 
 def main():
@@ -37,28 +29,27 @@ def main():
         </p>
     """, unsafe_allow_html=True)
         
-        # Explicar cada uma das variáveis
-        # with st.container():
-        #     st.write("##### O que significa cada variavel:")
-        #     st.write("xxxxxxxxxxxxxx")
-
-
         # Cria uma instância da classe correspondente ao algoritmo selecionado
         algorithm_class = algorithms_dict[selected_algorithm]
         params = algorithm_class.params
         args = {}
 
+        # Explicar cada uma das variáveis
+        with st.container():
+            st.latex(algorithm_class.input_format)
+
         filled_inputs = True
-        for i, param in enumerate(params):
+        for param in params:
             value = st.text_input(f"### Valor de {param.capitalize()}:", key=param)
             if value == "":
                 filled_inputs = False
-            else:
-                if validate_input(value):
+
+            elif algorithm_class.validate_input(value):
                     args[param] = int(value)
-                else:
-                    st.error("Por favor, digite um número inteiro diferente de zero.")
-                    filled_inputs = False
+
+            else:
+                st.error("Por favor, digite um número inteiro diferente de zero.")
+                filled_inputs = False
 
 
         # Botão para rodar a função

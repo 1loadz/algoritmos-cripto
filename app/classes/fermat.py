@@ -8,10 +8,16 @@ class AlgoritmoDeFermat():
     input_format = r"\text{Aplica o Algoritmo de Fermat para } N"
     params = ["n"]
 
+    @staticmethod
+    def validate_input(input):
+        try:
+            return int(input) != 0
+        except ValueError:
+            return False
+
     def __init__(self, n):
         self.n = n
         self.results = {}
-
 
     def display_results(self, df, x, y):
         if (x == (self.n+1)/2):
@@ -19,7 +25,6 @@ class AlgoritmoDeFermat():
         else:
             st.write(f"## Fator 1: {x-y} | Fator 2: {x+y}")
         st.write(df)
-
 
     def fermat_algorithm(self):
         df = pd.DataFrame(columns=['n', 'x', 'y', 'z'])
@@ -48,7 +53,6 @@ class AlgoritmoDeFermat():
             "factor2": x + y,
         }
     
-
     def solve(self):
         self.fermatalgorithm()
         return self.results

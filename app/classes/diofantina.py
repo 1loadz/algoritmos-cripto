@@ -4,8 +4,16 @@ import streamlit as st
 
 class EquacaoDiofantina():
 
-    input_format = r"\text{Calcula a seguinte Equação Diofantina: } aX + bY = c"
+    input_format = r"\text{Calcula a seguinte Equação Diofantina: } Ax + By = C"
     params = ["a", "b", "c"]
+
+    @staticmethod
+    def validate_input(input):
+        try:
+            return int(input) != 0
+        except ValueError:
+            return False
+
 
     def __init__(self, a, b, c):
         self.a = a
