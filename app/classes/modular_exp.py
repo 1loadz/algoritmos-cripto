@@ -24,26 +24,30 @@ class ModularExponentiation(BaseAlgorithm):
         self.n = n
     
     def find_cicle(self):
-        remainders = [(0, 0)] * (self.n-1)
-
         st.write("### Achando um Ciclo: ")
+        remainders = {}
 
         i = 1
-        while(1):
+        while(True):
             remainder = self.a**i % self.n
-
+            
             # Ciclo encontrado
-            if remainders[remainder-1][1] != 0:
-                return i-1
+            if remainder in remainders.values():
+                # st.write(remainders)
+                return i-1, remainders
             
             string_latex = fr"{self.a}^{{{i}}} &\equiv {remainder} \pmod{{{self.n}}} \\"
             st.latex(f"\\begin{{align*}} {string_latex} \\end{{align*}}")
 
-            remainders[remainder-1] = (i, remainder)
+            remainders[i] = remainder
             i+=1
 
+
     def solve(self):
-        exp = self.find_cicle()
+        exp, remainders = self.find_cicle()
+        valor_repetido = remainders[exp]
+        # st.write(remainders)
+        # st.write(f"### Ciclo encontrado: {exp} e valor repetido: {valor_repetido}")
 
         # Prevenção contra exp = 0, embora find_cicle deva retornar >= 1 se n>=1
         if exp == 0:
@@ -54,17 +58,34 @@ class ModularExponentiation(BaseAlgorithm):
         remainder = self.b % exp
         modular_result = pow(self.a, remainder, self.n)
 
-        self.display_results(quotient, remainder, exp, modular_result)
+        self.display_results(quotient, remainder, exp, modular_result, valor_repetido, remainders)
 
-    def display_results(self, quotient, remainder, exp, modular_result):
+
+    def display_results(self, quotient, remainder, exp, modular_result, valor_repetido, remainders):
         string_latex = fr"""
         \begin{{alignat*}}{{2}}
         {self.a}^{{{self.b}}} &\equiv ({self.a}^{{{exp}}})^{{{quotient}}} \cdot {self.a}^{{{remainder}}} && \pmod{{{self.n}}} \\
-        {self.a}^{{{self.b}}} &\equiv (1)^{{{quotient}}} \cdot {self.a}^{{{remainder}}} && \pmod{{{self.n}}} \\
-        {self.a}^{{{self.b}}} &\equiv {self.a}^{{{remainder}}} && \pmod{{{self.n}}} \\
-        {self.a}^{{{self.b}}} &\equiv {modular_result} && \pmod{{{self.n}}}
+        {self.a}^{{{self.b}}} &\equiv ({{{valor_repetido}}})^{{{quotient}}} \cdot {self.a}^{{{remainder}}} && \pmod{{{self.n}}} \\
+        {self.a}^{{{self.b}}} &\equiv ({{{valor_repetido ** quotient}}}) \cdot {self.a}^{{{remainder}}} && \pmod{{{self.n}}} \\
+        {self.a}^{{{self.b}}} &\equiv {(valor_repetido ** quotient * remainders[remainder])%self.n} && \pmod{{{self.n}}}
         \end{{alignat*}}
         """
 
         st.write("### Substituindo na nossa expressão:")
         st.latex(string_latex)
+
+
+
+
+    # def display_results(self, quotient, remainder, exp, modular_result):
+    #     string_latex = fr"""
+    #     \begin{{alignat*}}{{2}}
+    #     {self.a}^{{{self.b}}} &\equiv ({self.a}^{{{exp}}})^{{{quotient}}} \cdot {self.a}^{{{remainder}}} && \pmod{{{self.n}}} \\
+    #     {self.a}^{{{self.b}}} &\equiv (1)^{{{quotient}}} \cdot {self.a}^{{{remainder}}} && \pmod{{{self.n}}} \\
+    #     {self.a}^{{{self.b}}} &\equiv {self.a}^{{{remainder}}} && \pmod{{{self.n}}} \\
+    #     {self.a}^{{{self.b}}} &\equiv {modular_result} && \pmod{{{self.n}}}
+    #     \end{{alignat*}}
+    #     """
+
+    #     st.write("### Substituindo na nossa expressão:")
+    #     st.latex(string_latex)
