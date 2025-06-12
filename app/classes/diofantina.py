@@ -9,7 +9,7 @@ class EquacaoDiofantina(BaseAlgorithm):
 
     @classproperty
     def input_format(cls):
-        return r"\text{Calcula a seguinte Equação Diofantina: } Ax + By = C"
+        return r"\text{Equação Diofantina: } Ax + By = C"
     
     params = ["a", "b", "c"]
 
