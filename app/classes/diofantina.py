@@ -4,7 +4,6 @@ from classes.base_algorithm import BaseAlgorithm, classproperty
 from classes.euclides import AlgoritmoEuclidianoEstendido
 
 
-
 class EquacaoDiofantina(BaseAlgorithm):
 
     @classproperty
