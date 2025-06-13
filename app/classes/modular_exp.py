@@ -29,18 +29,17 @@ class ModularExponentiation(BaseAlgorithm):
 
     
     def find_cicle(self):
-        i = 1
+        self.remainders[1] = self.a % self.n
+
+        i = 2
         while(True):
-            remainder = self.a**i % self.n
+            remainder = (self.remainders[i-1]*self.a) % self.n
             
             # Ciclo encontrado
             if remainder in self.remainders.values():
                 self.cycle_start_exp = i-1
                 # st.write(self.remainders)
                 break
-            
-            # string_latex = fr"{self.a}^{{{i}}} &\equiv {remainder} \pmod{{{self.n}}} \\"
-            # st.latex(f"\\begin{{align*}} {string_latex} \\end{{align*}}")
 
             self.remainders[i] = remainder
             i+=1
@@ -50,26 +49,33 @@ class ModularExponentiation(BaseAlgorithm):
 
     def display_cicle(self):
         st.write("### Achando um Ciclo:")
-        for key, value in self.remainders.items():
-            string_latex = fr"{self.a}^{{{key}}} &\equiv {value} \pmod{{{self.n}}} \\"
-            st.latex(f"\\begin{{align*}} {string_latex} \\end{{align*}}")
-        
-        #     st.write(f"#### Ciclo começa em {self.cycle_start_exp} com valor {self.remainders[self.cycle_start_exp]}")
-        #     st.markdown(f"""
-        #     <p style='font-size:24px;'>
-        #         <strong><span style='color:#FF4B4B'>Ciclo começa em {self.cycle_start_exp} com valor {self.remainders[self.cycle_start_exp]}</span></strong>
-        #     </p>
-        # """, unsafe_allow_html=True)
+
+        items = list(self.remainders.items())
+        limit = 3
+        total_rows = self.cycle_start_exp
+
+        if total_rows <= limit * 5:
+            for key, value in items:
+                string_latex = fr"{self.a}^{{{key}}} &\equiv {value} \pmod{{{self.n}}} \\"
+                st.latex(f"\\begin{{align*}} {string_latex} \\end{{align*}}")
+
+        else:
+            for key, value in items[:limit]:
+                string_latex = fr"{self.a}^{{{key}}} &\equiv {value} \pmod{{{self.n}}} \\"
+                st.latex(f"\\begin{{align*}} {string_latex} \\end{{align*}}")
+
+            st.latex(r"\text{... } ")
+
+            for key, value in items[-limit:]:
+                string_latex = fr"{self.a}^{{{key}}} &\equiv {value} \pmod{{{self.n}}} \\"
+                st.latex(f"\\begin{{align*}} {string_latex} \\end{{align*}}")
+            
+            st.write(f"⚠️ {total_rows - 2 * limit} linhas omitidas no meio.")
 
 
     def solve(self):
         self.find_cicle()
         self.cycle_start_value = self.remainders[self.cycle_start_exp]
-
-        # Prevenção contra cycle_start_exp = 0, embora find_cicle deva retornar >= 1 se n>=1
-        if self.cycle_start_exp == 0:
-            st.error("Erro: 'cycle_start_exp' calculado como zero, verifique a função find_cicle e os inputs.")
-            return
 
         quotient = self.b // self.cycle_start_exp
         remainder = self.b % self.cycle_start_exp
