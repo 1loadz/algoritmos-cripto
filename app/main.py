@@ -42,14 +42,14 @@ def main():
         for param in params:
             value = st.text_input(f"### Valor de {param.capitalize()}:", key=param)
             if value == "":
+                st.error("Por favor, preencha os campos.")
                 filled_inputs = False
-
-            elif algorithm_class.validate_input(value):
-                    args[param] = int(value)
 
             else:
-                st.error("Por favor, digite um número inteiro diferente de zero.")
-                filled_inputs = False
+                if algorithm_class.validate_input(value):
+                    args[param] = int(value)
+                else:
+                    filled_inputs = False
 
 
         # Botão para rodar a função

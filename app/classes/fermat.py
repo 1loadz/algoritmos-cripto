@@ -18,9 +18,15 @@ class AlgoritmoDeFermat(BaseAlgorithm):
     @staticmethod
     def validate_input(input):
         try:
-            return int(input) != 0
+            input = int(input)
+            if input <= 0:
+                st.error("Por favor, digite um número inteiro maior que zero.")
+                return False
+            return True
         except ValueError:
+            st.error("Por favor, digite um número inteiro válido.")
             return False
+
 
     def __init__(self, n):
         self.n = n
