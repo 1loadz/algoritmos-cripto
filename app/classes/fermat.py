@@ -41,7 +41,8 @@ class AlgoritmoDeFermat(BaseAlgorithm):
         if (self.results["factor1"] == 1 or self.results["factor2"] == 1):
             st.latex(rf"\LARGE {self.n} \text{{ é primo}}")
         else:
-            st.latex(rf"\LARGE 1^\circ \text{{ Fator}}: {self.results['factor1']} \quad \mid \quad 2^\circ \text{{ Fator}}: {self.results['factor2']}")
+            st.latex(rf"\LARGE 1^\circ \text{{ Fator}}: {self.results['factor1']}")
+            st.latex(rf"\LARGE 2^\circ \text{{ Fator}}: {self.results['factor2']}")
 
         df = pd.DataFrame(values, columns=['n', 'x', 'y', 'z'])
         st.write(df)
